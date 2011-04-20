@@ -25,8 +25,8 @@ Feel free to make any changes to the UpdateQuality method and add any new code a
 Misc Links
 --------
 
-Kata Blog Post: http://iamnotmyself.com/2011/02/13/refactor-this-the-gilded-rose-kata/
-Original Kata Code :https://github.com/NotMyself/GildedRose
-SC Group Thread : http://groups.google.com/group/software_craftsmanship/browse_thread/thread/c428547ee498e226
-Other Java Version : https://github.com/wouterla/GildedRose
+* Kata Blog Post: http://iamnotmyself.com/2011/02/13/refactor-this-the-gilded-rose-kata/
+* Original Kata Code :https://github.com/NotMyself/GildedRose (in c#, those guys are funny)
+* SC Group Thread : http://groups.google.com/group/software_craftsmanship/browse_thread/thread/c428547ee498e226
+* Another Java Version : https://github.com/wouterla/GildedRose
 
