@@ -1,7 +1,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>fr.xebia.kata</groupId>
-    <artifactId>GildedRose</artifactId>
+    <groupId>fr.xebia.katas</groupId>
+    <artifactId>gildedrose-kata</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
