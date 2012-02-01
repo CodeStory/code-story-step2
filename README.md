@@ -1,7 +1,15 @@
-Gilded Rose Kata
---------
+# Gilded Rose Kata
 
-Hi and welcome to team Gilded Rose. As you know, we are a small inn with a prime location in a prominent city ran by a friendly innkeeper named Allison. We also buy and sell only the finest goods. Unfortunately, our goods are constantly degrading in quality as they approach their sell by date. We have a system in place that updates our inventory for us. It was developed by a no-nonsense type named Leeroy, who has moved on to new adventures. Your task is to add the new feature to our system so that we can begin selling a new category of items. First an introduction to our system:
+Hi and welcome to team Gilded Rose. As you know, we are a small inn with a prime location in a prominent city ran by a friendly innkeeper named Allison. We also buy and sell only the finest goods. Unfortunately, our goods are constantly degrading in quality as they approach their sell by date. We have a system in place that updates our inventory for us. It was developed by a no-nonsense type named Leeroy, who has moved on to new adventures.
+
+## Your tasks
+
+Your tasks are to :
+
+* Add the new feature to our system so that we can begin selling a new category of items.
+* Present the system as a web application so that we can take orders worldwide.
+
+First an introduction to our system:
 
 * All items have a SellIn value which denotes the number of days we have to sell the item
 * All items have a Quality value which denotes how valuable the item is
@@ -16,17 +24,14 @@ Pretty simple, right? Well this is where it gets interesting:
 * “Sulfuras”, being a legendary item, never has to be sold or decreases in Quality
 * “Backstage passes”, like aged brie, increases in Quality as it’s SellIn value approaches; Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but Quality drops to 0 after the concert
 
+## New feature
+
 We have recently signed a supplier of conjured items. This requires an update to our system:
 
 * “Conjured” items degrade in Quality twice as fast as normal items
 
 Feel free to make any changes to the UpdateQuality method and add any new code as long as everything still works correctly. However, do not alter the Item class or Items property as those belong to the goblin in the corner who will insta-rage and one-shot you as he doesn’t believe in shared code ownership (you can make the UpdateQuality method and Items property static if you like, we’ll cover for you).
 
-Misc Links
---------
+# Misc Links
 
-* Kata Blog Post: http://iamnotmyself.com/2011/02/13/refactor-this-the-gilded-rose-kata/
-* Original Kata Code :https://github.com/NotMyself/GildedRose (in c#, those guys are funny)
-* SC Group Thread : http://groups.google.com/group/software_craftsmanship/browse_thread/thread/c428547ee498e226
-* Another Java Version : https://github.com/wouterla/GildedRose
-
+* Original Kata Code : https://github.com/NotMyself/GildedRose
