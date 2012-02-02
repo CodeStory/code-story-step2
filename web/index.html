@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Gilded Rose Inn</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link href="/web/css/bootstrap.css" rel="stylesheet">
+	<style>
+		body {
+			padding-top: 60px;
+		}
+	</style>
+	<link href="/web/css/bootstrap-responsive.css" rel="stylesheet">
+	<link rel="shortcut icon" href="/web/favicon.ico">
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="brand" href="#">Gilded Rose Inn</a>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<h1>Inventory</h1>
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>Item</th>
+			<th>Sell in</th>
+			<th>Quality</th>
+		</tr>
+		</thead>
+		<tbody>
+		$items: {item|
+		<tr>
+			<td>$item.name$</td>
+			<td>$item.sellIn$ days</td>
+			<td>$item.quality$</td>
+		</tr>
+		}$
+		</tbody>
+	</table>
+
+	<a class="btn btn-primary" href="/updateQuality">Update Quality</a>
+	<a class="btn btn-danger" href="/reset">Reset</a>
+</div>
+
+<script src="/web/js/jquery-1.7.1.min.js"></script>
+<script src="/web/js/bootstrap.min.js"></script>
+</body>
+</html>
