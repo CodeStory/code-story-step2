@@ -1,7 +1,6 @@
 package fr.xebia.katas.gildedrose;
 
 import com.sampullara.mustache.*;
-import org.apache.commons.lang.*;
 import org.simpleframework.http.*;
 import org.simpleframework.http.core.*;
 import org.simpleframework.transport.connect.*;
@@ -13,15 +12,18 @@ import static com.google.common.io.Files.*;
 import static org.simpleframework.http.Status.*;
 
 public class InnHttpServer implements Container {
-	private static final String[] STATIC_EXTENSIONS = new String[]{".css", ".js", ".png", "ico"};
+	private static final String WEB = "web";
 
 	private final int port;
 	private Inn inn;
-	private SocketConnection socketConnection;
 
 	public InnHttpServer(int port) {
 		this.port = port;
 		inn = new Inn();
+	}
+
+	private void run() throws IOException {
+		new SocketConnection(this).connect(new InetSocketAddress(port));
 	}
 
 	@Override
@@ -29,8 +31,8 @@ public class InnHttpServer implements Container {
 		String path = req.getPath().getPath();
 
 		try {
-			if (StringUtils.endsWithAny(path, STATIC_EXTENSIONS)) {
-				copy(new File("web/..", path), resp.getOutputStream());
+			if (path.matches(".*\\.((css)|(js)|(ico))")) {
+				copy(new File(WEB, path), resp.getOutputStream());
 			} else if (path.equals("/updateQuality")) {
 				inn.updateQuality();
 				resp.setCode(TEMPORARY_REDIRECT.getCode());
@@ -40,7 +42,7 @@ public class InnHttpServer implements Container {
 				resp.setCode(TEMPORARY_REDIRECT.getCode());
 				resp.add("Location", "/");
 			} else {
-				Mustache template = new MustacheBuilder(new File("web")).parseFile("index.html");
+				Mustache template = new MustacheBuilder(new File(WEB)).parseFile("index.html");
 				template.execute(new OutputStreamWriter(resp.getOutputStream()), new Scope(inn));
 			}
 		} catch (Exception e) {
@@ -56,10 +58,5 @@ public class InnHttpServer implements Container {
 
 	public static void main(String[] args) throws Exception {
 		new InnHttpServer(8080).run();
-	}
-
-	private void run() throws IOException {
-		socketConnection = new SocketConnection(this);
-		socketConnection.connect(new InetSocketAddress(port));
 	}
 }
