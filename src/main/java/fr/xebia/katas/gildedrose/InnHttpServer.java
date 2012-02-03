@@ -1,17 +1,15 @@
 package fr.xebia.katas.gildedrose;
 
-import com.google.common.io.*;
 import com.google.common.util.concurrent.*;
+import com.sampullara.mustache.*;
 import org.apache.commons.lang.*;
 import org.simpleframework.http.*;
 import org.simpleframework.http.core.*;
 import org.simpleframework.transport.connect.*;
-import org.stringtemplate.v4.*;
 
 import java.io.*;
 import java.net.*;
 
-import static com.google.common.base.Charsets.*;
 import static com.google.common.io.Files.*;
 import static org.simpleframework.http.Status.*;
 
@@ -43,9 +41,10 @@ public class InnHttpServer extends AbstractIdleService implements Container {
 				resp.setCode(TEMPORARY_REDIRECT.getCode());
 				resp.add("Location", "/");
 			} else {
-				resp.getPrintStream().append(html());
+				Mustache template = new MustacheBuilder(new File("web")).parseFile("index.html");
+				template.execute(new OutputStreamWriter(resp.getOutputStream()), new Scope(inn));
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -54,15 +53,6 @@ public class InnHttpServer extends AbstractIdleService implements Container {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	private String html() throws IOException {
-		String html = Files.toString(new File("web", "index.html"), UTF_8);
-
-		ST template = new ST(html, '$', '$');
-		template.add("items", inn.getItems());
-
-		return template.render();
 	}
 
 	public static void main(String[] args) throws Exception {
