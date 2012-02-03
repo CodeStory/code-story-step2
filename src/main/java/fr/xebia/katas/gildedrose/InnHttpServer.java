@@ -1,6 +1,5 @@
 package fr.xebia.katas.gildedrose;
 
-import com.google.common.util.concurrent.*;
 import com.sampullara.mustache.*;
 import org.apache.commons.lang.*;
 import org.simpleframework.http.*;
@@ -13,7 +12,7 @@ import java.net.*;
 import static com.google.common.io.Files.*;
 import static org.simpleframework.http.Status.*;
 
-public class InnHttpServer extends AbstractIdleService implements Container {
+public class InnHttpServer implements Container {
 	private static final String[] STATIC_EXTENSIONS = new String[]{".css", ".js", ".png", "ico"};
 
 	private final int port;
@@ -56,21 +55,11 @@ public class InnHttpServer extends AbstractIdleService implements Container {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new InnHttpServer(8080).startAndWait();
+		new InnHttpServer(8080).run();
 	}
 
 	private void run() throws IOException {
 		socketConnection = new SocketConnection(this);
 		socketConnection.connect(new InetSocketAddress(port));
-	}
-
-	@Override
-	protected void startUp() throws Exception {
-		run();
-	}
-
-	@Override
-	protected void shutDown() throws Exception {
-		socketConnection.close();
 	}
 }
