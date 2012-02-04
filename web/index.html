@@ -5,7 +5,7 @@
 	<title>Gilded Rose Inn</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/web/css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		body {
 			padding-top: 60px;
@@ -25,6 +25,14 @@
 
 <div class="container">
 	<h1>Inventory</h1>
+
+	<div id="inn"></div>
+
+	<a class="btn btn-primary" href="/updateQuality">Update Quality</a>
+	<a class="btn btn-danger" href="/reset">Reset</a>
+</div>
+
+<script id="innTemplate" type="text/template">
 	<table class="table table-striped">
 		<thead>
 		<tr>
@@ -43,12 +51,13 @@
 		{{/items}}
 		</tbody>
 	</table>
-
-	<a class="btn btn-primary" href="/updateQuality">Update Quality</a>
-	<a class="btn btn-danger" href="/reset">Reset</a>
-</div>
-
-<script src="/js/jquery-1.7.1.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
+</script>
+<script src="/web/js/jquery-1.7.1.min.js"></script>
+<script src="/web/js/mustache.js"></script>
+<script type="application/javascript">
+	$.getJSON('/inn.json', function (data) {
+		$('#inn').html(Mustache.to_html($('#innTemplate').html(), data));
+	});
+</script>
 </body>
 </html>

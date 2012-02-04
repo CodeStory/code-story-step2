@@ -1,62 +1,60 @@
 package fr.xebia.katas.gildedrose;
 
-import com.sampullara.mustache.*;
-import org.simpleframework.http.*;
-import org.simpleframework.http.core.*;
-import org.simpleframework.transport.connect.*;
+import com.sun.jersey.api.container.httpserver.*;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import java.io.*;
 import java.net.*;
 
-import static com.google.common.io.Files.*;
-import static org.simpleframework.http.Status.*;
+@Path("/")
+public class InnHttpServer {
+	private static Inn inn = new Inn();
 
-public class InnHttpServer implements Container {
-	private static final String WEB = "web";
+	@GET
+	@Produces("text/html")
+	public File index() {
+		return new File("web/index.html");
+	}
 
-	private final int port;
-	private Inn inn;
+	@GET
+	@Produces("text/css")
+	@Path("/web/css/{what}")
+	public File css(@PathParam("what") String what) {
+		return new File("web/css", what);
+	}
 
-	public InnHttpServer(int port) {
-		this.port = port;
+	@GET
+	@Produces("application/javascript")
+	@Path("/web/js/{what}")
+	public File js(@PathParam("what") String what) {
+		return new File("web/js", what);
+	}
+
+	@GET
+	@Produces("application/json")
+	@Path("/inn.json")
+	public Inn inn() {
+		return inn;
+	}
+
+	@GET
+	@Path("/updateQuality")
+	public Response updateQuality() {
+		inn.updateQuality();
+
+		return Response.temporaryRedirect(URI.create("/")).build();
+	}
+
+	@GET
+	@Path("/reset")
+	public Response reset() {
 		inn = new Inn();
-	}
 
-	private void run() throws IOException {
-		new SocketConnection(this).connect(new InetSocketAddress(port));
-	}
-
-	@Override
-	public void handle(Request req, Response resp) {
-		String path = req.getPath().getPath();
-
-		try {
-			if (path.matches(".*\\.((css)|(js)|(ico))")) {
-				copy(new File(WEB, path), resp.getOutputStream());
-			} else if (path.equals("/updateQuality")) {
-				inn.updateQuality();
-				resp.setCode(TEMPORARY_REDIRECT.getCode());
-				resp.add("Location", "/");
-			} else if (path.equals("/reset")) {
-				inn = new Inn();
-				resp.setCode(TEMPORARY_REDIRECT.getCode());
-				resp.add("Location", "/");
-			} else {
-				Mustache template = new MustacheBuilder(new File(WEB)).parseFile("index.html");
-				template.execute(new OutputStreamWriter(resp.getOutputStream()), new Scope(inn));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				resp.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		return Response.temporaryRedirect(URI.create("/")).build();
 	}
 
 	public static void main(String[] args) throws Exception {
-		new InnHttpServer(8080).run();
+		HttpServerFactory.create("http://localhost:8080/").start();
 	}
 }
