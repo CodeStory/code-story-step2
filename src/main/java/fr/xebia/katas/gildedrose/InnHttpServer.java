@@ -4,6 +4,7 @@ import com.google.common.collect.*;
 import com.sun.jersey.api.container.httpserver.*;
 import lombok.*;
 
+import javax.activation.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.*;
@@ -16,22 +17,33 @@ public class InnHttpServer {
 
 	@GET
 	@Produces("text/html")
-	public File index() {
-		return new File("web/index.html");
+	public Response index() {
+		return staticResource("index.html");
 	}
 
 	@GET
-	@Produces("text/css")
-	@Path("/web/css/{what}")
-	public File css(@PathParam("what") String what) {
-		return new File("web/css", what);
+	@Path("/web/{what: .*}")
+	public Response staticResource(@PathParam("what") String what) {
+		File image = new File("web", what);
+		if (!image.exists()) {
+			throw new WebApplicationException(404);
+		}
+		String mimeType = new MimetypesFileTypeMap().getContentType(image);
+		return Response.ok(image, mimeType).build();
 	}
 
 	@GET
-	@Produces("application/javascript")
-	@Path("/web/js/{what}")
-	public File js(@PathParam("what") String what) {
-		return new File("web/js", what);
+	@Path("/updateQuality")
+	public Response updateQuality() {
+		inn.updateQuality();
+		return Response.temporaryRedirect(URI.create("/")).build();
+	}
+
+	@GET
+	@Path("/reset")
+	public Response reset() {
+		inn = new Inn();
+		return Response.temporaryRedirect(URI.create("/")).build();
 	}
 
 	@GET
@@ -48,34 +60,11 @@ public class InnHttpServer {
 		return items;
 	}
 
-	@GET
-	@Produces("image/jpg")
-	@Path("/img/{what}")
-	public File image(@PathParam("what") String what) {
-		return new File("web/img", what + ".jpg");
-	}
-
 	@Data
 	static class IndexedItem {
 		@Delegate
 		public final Item item;
 		public final int index;
-	}
-
-	@GET
-	@Path("/updateQuality")
-	public Response updateQuality() {
-		inn.updateQuality();
-
-		return Response.temporaryRedirect(URI.create("/")).build();
-	}
-
-	@GET
-	@Path("/reset")
-	public Response reset() {
-		inn = new Inn();
-
-		return Response.temporaryRedirect(URI.create("/")).build();
 	}
 
 	public static void main(String[] args) throws Exception {
