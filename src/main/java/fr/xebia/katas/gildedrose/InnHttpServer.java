@@ -1,11 +1,14 @@
 package fr.xebia.katas.gildedrose;
 
+import com.google.common.collect.*;
 import com.sun.jersey.api.container.httpserver.*;
+import lombok.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 @Path("/")
 public class InnHttpServer {
@@ -33,9 +36,30 @@ public class InnHttpServer {
 
 	@GET
 	@Produces("application/json")
-	@Path("/inn.json")
-	public Inn inn() {
-		return inn;
+	@Path("/inventory.json")
+	public List<IndexedItem> inventory() {
+		List<IndexedItem> items = Lists.newArrayList();
+
+		int index = 0;
+		for (Item item : inn.getItems()) {
+			items.add(new IndexedItem(item, index++));
+		}
+
+		return items;
+	}
+
+	@GET
+	@Produces("image/jpg")
+	@Path("/img/{what}")
+	public File image(@PathParam("what") String what) {
+		return new File("web/img", what + ".jpg");
+	}
+
+	@Data
+	static class IndexedItem {
+		@Delegate
+		public final Item item;
+		public final int index;
 	}
 
 	@GET
