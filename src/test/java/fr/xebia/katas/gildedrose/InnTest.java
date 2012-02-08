@@ -1,6 +1,5 @@
 package fr.xebia.katas.gildedrose;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -75,7 +74,6 @@ public class InnTest {
         }
         Item item = inn.getItems().get(0);
         assertThat(item.getSellIn()).isEqualTo(0);
-
     }
 
     @Test
@@ -129,5 +127,29 @@ public class InnTest {
         assertThat(item.getQuality()).isEqualTo(0);
     }
 
+/*
+    // Conjured
+    @Test
+    @Ignore
+    public void givenAConjuredItem_thenQualityDropTwiceAsFast() throws Exception {
+        Inn inn = new Inn(new Item("Conjured Language", 5, 20));
+        for (int i=0;i<5;i++) {
+            inn.updateQuality();
+        }
+        Item item = inn.getItems().get(0);
+        assertThat(item.getQuality()).isEqualTo(10);
+    }
 
+    @Test
+    @Ignore
+    public void givenAConjuredItemWithSellinDatePasses_thenQualityDropFourTimeAsFast() throws Exception {
+        Inn inn = new Inn(new Item("Conjured Language", 0, 20));
+        for (int i=0;i<2;i++) {
+            inn.updateQuality();
+        }
+        Item item = inn.getItems().get(0);
+        assertThat(item.getQuality()).isEqualTo(12);
+    }
+
+ */
 }
