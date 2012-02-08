@@ -127,10 +127,8 @@ public class InnTest {
         assertThat(item.getQuality()).isEqualTo(0);
     }
 
-/*
     // Conjured
     @Test
-    @Ignore
     public void givenAConjuredItem_thenQualityDropTwiceAsFast() throws Exception {
         Inn inn = new Inn(new Item("Conjured Language", 5, 20));
         for (int i=0;i<5;i++) {
@@ -141,7 +139,6 @@ public class InnTest {
     }
 
     @Test
-    @Ignore
     public void givenAConjuredItemWithSellinDatePasses_thenQualityDropFourTimeAsFast() throws Exception {
         Inn inn = new Inn(new Item("Conjured Language", 0, 20));
         for (int i=0;i<2;i++) {
@@ -151,5 +148,4 @@ public class InnTest {
         assertThat(item.getQuality()).isEqualTo(12);
     }
 
- */
 }

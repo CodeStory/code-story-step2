@@ -40,11 +40,18 @@ public class Inn {
                 handleAgedBrie(currentItem);
             } else if (currentItem.getName().equals("Backstage passes to a TAFKAL80ETC concert")) {
                 handleBackstagePasses(currentItem);
+            } else if (currentItem.getName().startsWith("Conjured")) {
+                handleConjured(currentItem);
             } else {
                 handleDefaultObject(currentItem);
             }
             ensureQualityIsWithinBounds(currentItem);
         }
+    }
+
+    private void handleConjured(Item conjuredItem) {
+        handleDefaultObject(conjuredItem);
+        handleDefaultObject(conjuredItem);
     }
 
     private void ensureQualityIsWithinBounds(Item currentItem) {
