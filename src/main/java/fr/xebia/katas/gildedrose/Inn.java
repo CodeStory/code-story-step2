@@ -25,28 +25,31 @@ public class Inn {
     }
 
     @VisibleForTesting
-    protected List<Item> getItems() {
-        return items;
+    protected Item getItem(int i) {
+        return items.get(i);
     }
 
-    public void updateQuality() {
-        for (int i = 0; i < items.size(); i++) {
-            Item currentItem = items.get(i);
-            if (currentItem.getName().equals("Sulfuras, Hand of Ragnaros")) {
+    public void updateQualityAndSellIn() {
+        for(Item currentItem : items) {
+            if (is(currentItem, "Sulfuras")) {
                 continue;
             }
             currentItem.setSellIn(currentItem.getSellIn() - 1);
-            if (currentItem.getName().equals("Aged Brie")) {
+            if (is(currentItem, "Aged Brie")) {
                 handleAgedBrie(currentItem);
-            } else if (currentItem.getName().equals("Backstage passes to a TAFKAL80ETC concert")) {
+            } else if (is(currentItem, "Backstage passes")) {
                 handleBackstagePasses(currentItem);
-            } else if (currentItem.getName().startsWith("Conjured")) {
+            } else if (is(currentItem, "Conjured")) {
                 handleConjured(currentItem);
             } else {
                 handleDefaultObject(currentItem);
             }
             ensureQualityIsWithinBounds(currentItem);
         }
+    }
+
+    private boolean is(Item currentItem, String name) {
+        return currentItem.getName().startsWith(name);
     }
 
     private void handleConjured(Item conjuredItem) {
@@ -74,14 +77,12 @@ public class Inn {
     private void handleBackstagePasses(Item backstagePasses) {
         if (backstagePasses.getSellIn() < 0) {
             backstagePasses.setQuality(0);
+        } else if (backstagePasses.getSellIn() < 5) {
+            backstagePasses.setQuality(backstagePasses.getQuality() + 3);
+        } else if (backstagePasses.getSellIn() < 10) {
+            backstagePasses.setQuality(backstagePasses.getQuality() + 2);
         } else {
-            if (backstagePasses.getSellIn() < 5) {
-                backstagePasses.setQuality(backstagePasses.getQuality() + 3);
-            } else if (backstagePasses.getSellIn() < 10) {
-                backstagePasses.setQuality(backstagePasses.getQuality() + 2);
-            } else {
-                backstagePasses.setQuality(backstagePasses.getQuality() + 1);
-            }
+            backstagePasses.setQuality(backstagePasses.getQuality() + 1);
         }
     }
 
@@ -95,7 +96,7 @@ public class Inn {
 
     public static void main(String[] args) {
         System.out.println("OMGHAI!");
-        new Inn().updateQuality();
+        new Inn().updateQualityAndSellIn();
     }
 
 }
