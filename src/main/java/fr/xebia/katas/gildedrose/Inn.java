@@ -52,25 +52,11 @@ public class Inn {
         return currentItem.getName().startsWith(name);
     }
 
-    private void handleConjured(Item conjuredItem) {
-        handleDefaultObject(conjuredItem);
-        handleDefaultObject(conjuredItem);
-    }
-
-    private void ensureQualityIsWithinBounds(Item currentItem) {
-        if (currentItem.getQuality() < 0) {
-            currentItem.setQuality(0);
-        }
-        if (currentItem.getQuality() > 50) {
-            currentItem.setQuality(50);
-        }
-    }
-
-    private void handleDefaultObject(Item defaultItem) {
-        if (defaultItem.getSellIn() < 0) {
-            defaultItem.setQuality(defaultItem.getQuality() - 2);
+    private void handleAgedBrie(Item agedBrie) {
+        if (agedBrie.getSellIn() >= 0) {
+            agedBrie.setQuality(agedBrie.getQuality() + 1);
         } else {
-            defaultItem.setQuality(defaultItem.getQuality() - 1);
+            agedBrie.setQuality(agedBrie.getQuality() + 2);
         }
     }
 
@@ -86,11 +72,25 @@ public class Inn {
         }
     }
 
-    private void handleAgedBrie(Item agedBrie) {
-        if (agedBrie.getSellIn() >= 0) {
-            agedBrie.setQuality(agedBrie.getQuality() + 1);
+    private void handleConjured(Item conjuredItem) {
+        handleDefaultObject(conjuredItem);
+        handleDefaultObject(conjuredItem);
+    }
+
+    private void handleDefaultObject(Item defaultItem) {
+        if (defaultItem.getSellIn() < 0) {
+            defaultItem.setQuality(defaultItem.getQuality() - 2);
         } else {
-            agedBrie.setQuality(agedBrie.getQuality() + 2);
+            defaultItem.setQuality(defaultItem.getQuality() - 1);
+        }
+    }
+
+    private void ensureQualityIsWithinBounds(Item someItem) {
+        if (someItem.getQuality() < 0) {
+            someItem.setQuality(0);
+        }
+        if (someItem.getQuality() > 50) {
+            someItem.setQuality(50);
         }
     }
 
