@@ -6,21 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inn {
-    private List<Item> items;
+    private List<InnItem> items;
 
     public Inn() {
-        items = new ArrayList<Item>();
-        items.add(new Item("+5 Dexterity Vest", 10, 20));
-        items.add(new Item("Aged Brie", 2, 0));
-        items.add(new Item("Elixir of the Mongoose", 5, 7));
-        items.add(new Item("Sulfuras, Hand of Ragnaros", 0, 80));
-        items.add(new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20));
-        items.add(new Item("Conjured Mana Cake", 3, 6));
+        items = new ArrayList<InnItem>();
+        items.add(new InnItem("+5 Dexterity Vest", 10, 20));
+        items.add(new InnItem("Aged Brie", 2, 0));
+        items.add(new InnItem("Elixir of the Mongoose", 5, 7));
+        items.add(new InnItem("Sulfuras, Hand of Ragnaros", 0, 80));
+        items.add(new InnItem("Backstage passes to a TAFKAL80ETC concert", 15, 20));
+        items.add(new InnItem("Conjured Mana Cake", 3, 6));
     }
 
     @VisibleForTesting
-    protected Inn(Item item) {
-        items = new ArrayList<Item>();
+    protected Inn(InnItem item) {
+        items = new ArrayList<InnItem>();
         items.add(item);
     }
 
@@ -30,21 +30,20 @@ public class Inn {
     }
 
     public void updateQualityAndSellIn() {
-        for(Item currentItem : items) {
-            if (is(currentItem, "Sulfuras")) {
+        for(InnItem currentItem : items) {
+            if (currentItem.is("Sulfuras")) {
                 continue;
             }
-            currentItem.setSellIn(currentItem.getSellIn() - 1);
-            if (is(currentItem, "Aged Brie")) {
+            currentItem.decreaseSellIn();
+            if (currentItem.is("Aged Brie")) {
                 handleAgedBrie(currentItem);
-            } else if (is(currentItem, "Backstage passes")) {
+            } else if (currentItem.is("Backstage passes")) {
                 handleBackstagePasses(currentItem);
-            } else if (is(currentItem, "Conjured")) {
+            } else if (currentItem.is("Conjured")) {
                 handleConjured(currentItem);
             } else {
                 handleDefaultObject(currentItem);
             }
-            ensureQualityIsWithinBounds(currentItem);
         }
     }
 
@@ -52,45 +51,36 @@ public class Inn {
         return currentItem.getName().startsWith(name);
     }
 
-    private void handleAgedBrie(Item agedBrie) {
-        if (agedBrie.getSellIn() >= 0) {
-            agedBrie.setQuality(agedBrie.getQuality() + 1);
+    private void handleAgedBrie(InnItem agedBrie) {
+        if (agedBrie.isSellInDayPassed()) {
+            agedBrie.increaseQuality(2);
         } else {
-            agedBrie.setQuality(agedBrie.getQuality() + 2);
+            agedBrie.increaseQuality();
         }
     }
 
-    private void handleBackstagePasses(Item backstagePasses) {
-        if (backstagePasses.getSellIn() < 0) {
+    private void handleBackstagePasses(InnItem backstagePasses) {
+        if (backstagePasses.isSellInDayPassed()) {
             backstagePasses.setQuality(0);
         } else if (backstagePasses.getSellIn() < 5) {
-            backstagePasses.setQuality(backstagePasses.getQuality() + 3);
+            backstagePasses.increaseQuality(3);
         } else if (backstagePasses.getSellIn() < 10) {
-            backstagePasses.setQuality(backstagePasses.getQuality() + 2);
+            backstagePasses.increaseQuality(2);
         } else {
-            backstagePasses.setQuality(backstagePasses.getQuality() + 1);
+            backstagePasses.increaseQuality();
         }
     }
 
-    private void handleConjured(Item conjuredItem) {
+    private void handleConjured(InnItem conjuredItem) {
         handleDefaultObject(conjuredItem);
         handleDefaultObject(conjuredItem);
     }
 
-    private void handleDefaultObject(Item defaultItem) {
-        if (defaultItem.getSellIn() < 0) {
-            defaultItem.setQuality(defaultItem.getQuality() - 2);
+    private void handleDefaultObject(InnItem defaultItem) {
+        if (defaultItem.isSellInDayPassed()) {
+            defaultItem.decreaseQuality(2);
         } else {
-            defaultItem.setQuality(defaultItem.getQuality() - 1);
-        }
-    }
-
-    private void ensureQualityIsWithinBounds(Item someItem) {
-        if (someItem.getQuality() < 0) {
-            someItem.setQuality(0);
-        }
-        if (someItem.getQuality() > 50) {
-            someItem.setQuality(50);
+            defaultItem.decreaseQuality();
         }
     }
 
@@ -99,4 +89,7 @@ public class Inn {
         new Inn().updateQualityAndSellIn();
     }
 
+    public List<InnItem> getItems() {
+        return items;
+    }
 }

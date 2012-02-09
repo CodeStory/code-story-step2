@@ -6,11 +6,10 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class InnTest {
 
-
    // Lambda Object
    @Test
    public void givenALambdaObject_ThenSellInAndQualityLowerByOneEachDay() throws Exception {
-      Inn inn = new Inn(new Item("Object Lambda", 10, 20));
+      Inn inn = new Inn(new InnItem("Object Lambda", 10, 20));
       for (int i=0;i<10;i++) {
           inn.updateQualityAndSellIn();
       }
@@ -21,7 +20,7 @@ public class InnTest {
 
     @Test
     public void givenALambdaObjectWithSellInDatePassed_ThenQualityDegradeBy2EachDay() throws Exception {
-        Inn inn = new Inn(new Item("Object Lambda", 0, 10));
+        Inn inn = new Inn(new InnItem("Object Lambda", 0, 10));
         for (int i=0;i<4;i++) {
             inn.updateQualityAndSellIn();
         }
@@ -33,7 +32,7 @@ public class InnTest {
     // Quality Limits
     @Test
          public void givenAnyQuality_ThenQualityIsNeverNegative() throws Exception {
-        Inn inn = new Inn(new Item("Object Lambda", 5, 0));
+        Inn inn = new Inn(new InnItem("Object Lambda", 5, 0));
         for (int i=0;i<5;i++) {
             inn.updateQualityAndSellIn();
         }
@@ -44,7 +43,7 @@ public class InnTest {
 
     @Test
     public void givenAnyQuality_ThenQualityIsNeverAbove50() throws Exception {
-        Inn inn = new Inn(new Item("Aged Brie", 200, 0));
+        Inn inn = new Inn(new InnItem("Aged Brie", 200, 0));
         for (int i=0;i<100;i++) {
             inn.updateQualityAndSellIn();
         }
@@ -56,7 +55,7 @@ public class InnTest {
     // Aged Brie
     @Test
     public void givenAnAgedBrie_ThenQualityGrow() throws Exception {
-        Inn inn = new Inn(new Item("Aged Brie", 10, 10));
+        Inn inn = new Inn(new InnItem("Aged Brie", 10, 10));
         for (int i=0;i<5;i++) {
             inn.updateQualityAndSellIn();
         }
@@ -68,7 +67,7 @@ public class InnTest {
     // Sulfuras
     @Test
     public void givenASulfuras_thenItCantBeSold() throws Exception {
-        Inn inn = new Inn(new Item("Sulfuras", 0, 42));
+        Inn inn = new Inn(new InnItem("Sulfuras", 0, 42));
         for (int i=0;i<400;i++) {
             inn.updateQualityAndSellIn();
         }
@@ -78,7 +77,7 @@ public class InnTest {
 
     @Test
     public void givenASulfuras_thenQualityDoesntDegrade() throws Exception {
-        Inn inn = new Inn(new Item("Sulfuras", 0, 42));
+        Inn inn = new Inn(new InnItem("Sulfuras", 0, 42));
         for (int i=0;i<400;i++) {
             inn.updateQualityAndSellIn();
         }
@@ -89,7 +88,7 @@ public class InnTest {
     // Backtstage Passes
     @Test
     public void givenABackstagePass_thenQualityGrow() throws Exception {
-        Inn inn = new Inn(new Item("Backstage passes", 15, 20));
+        Inn inn = new Inn(new InnItem("Backstage passes", 15, 20));
         for (int i=0;i<5;i++) {
             inn.updateQualityAndSellIn();
         }
@@ -99,7 +98,7 @@ public class InnTest {
 
     @Test
     public void givenABackstagePass_thenQualityGrowTwiceWhenWithin10Days() throws Exception {
-        Inn inn = new Inn(new Item("Backstage passes", 10, 20));
+        Inn inn = new Inn(new InnItem("Backstage passes", 10, 20));
         for (int i=0;i<5;i++) {
             inn.updateQualityAndSellIn();
         }
@@ -109,7 +108,7 @@ public class InnTest {
 
     @Test
     public void givenABackstagePass_thenQualityGrow3TimesWhenWithin5Days() throws Exception {
-        Inn inn = new Inn(new Item("Backstage passes", 5, 20));
+        Inn inn = new Inn(new InnItem("Backstage passes", 5, 20));
         for (int i=0;i<5;i++) {
             inn.updateQualityAndSellIn();
         }
@@ -119,7 +118,7 @@ public class InnTest {
 
     @Test
     public void givenABackstagePass_thenQualityDropToZeroOnceSellinIsGone() throws Exception {
-        Inn inn = new Inn(new Item("Backstage passes", 5, 20));
+        Inn inn = new Inn(new InnItem("Backstage passes", 5, 20));
         for (int i=0;i<6;i++) {
             inn.updateQualityAndSellIn();
         }
@@ -130,7 +129,7 @@ public class InnTest {
     // Conjured
     @Test
     public void givenAConjuredItem_thenQualityDropTwiceAsFast() throws Exception {
-        Inn inn = new Inn(new Item("Conjured Language", 5, 20));
+        Inn inn = new Inn(new InnItem("Conjured Language", 5, 20));
         for (int i=0;i<5;i++) {
             inn.updateQualityAndSellIn();
         }
@@ -140,7 +139,7 @@ public class InnTest {
 
     @Test
     public void givenAConjuredItemWithSellinDatePasses_thenQualityDropFourTimeAsFast() throws Exception {
-        Inn inn = new Inn(new Item("Conjured Language", 0, 20));
+        Inn inn = new Inn(new InnItem("Conjured Language", 0, 20));
         for (int i=0;i<2;i++) {
             inn.updateQualityAndSellIn();
         }
