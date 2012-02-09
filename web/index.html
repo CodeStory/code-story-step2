@@ -4,14 +4,9 @@
 	<meta charset="utf-8">
 	<title>Gilded Rose Inn</title>
 	<link href="/web/css/bootstrap.min.css" rel="stylesheet">
-	<style>
-		body {
-			padding-top: 60px;
-		}
-	</style>
 </head>
 
-<body>
+<body style="padding-top: 60px;">
 
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
@@ -24,63 +19,54 @@
 <div class="container">
 	<h1>Inventory</h1>
 
-	<div id="inventory"></div>
+	<script id="inventory" type="text/template">
+		<table class="table table-striped">
+			<thead>
+			<tr>
+				<th>Item</th>
+				<th>Sell in</th>
+				<th>Quality</th>
+			</tr>
+			</thead>
+			<tbody>
+			{{#.}}
+			<tr>
+				<td><a data-toggle="modal" href="#myModal{{index}}">{{name}}</a></td>
+				<td>{{sellIn}} days</td>
+				<td>{{quality}}</td>
+			</tr>
+			{{/.}}
+			</tbody>
+
+			{{#.}}
+			<div class="modal fade" id="myModal{{index}}">
+				<div class="modal-header">
+					<a class="close" data-dismiss="modal">&times;</a>
+
+					<h3>{{name}}</h3>
+				</div>
+				<div class="modal-body">
+					<p>Quality: <span class="label label-info">{{quality}}</span></p>
+
+					<p>Sell in: <span class="label label-info">{{sellIn}} days</span></p>
+
+					<img class="thumbnail" src="/web/img/{{name}}.jpg" alt="{{name}}">
+				</div>
+			</div>
+			{{/.}}
+		</table>
+	</script>
 
 	<a class="btn btn-primary" href="/updateQuality">Update Quality</a>
 	<a class="btn btn-danger" href="/reset">Reset</a>
 </div>
 
-<script id="inventoryTemplate" type="text/template">
-	<table class="table table-striped">
-		<thead>
-		<tr>
-			<th>Item</th>
-			<th>Sell in</th>
-			<th>Quality</th>
-		</tr>
-		</thead>
-		<tbody>
-		{{#.}}
-		<tr>
-			<td><a data-toggle="modal" href="#myModal{{index}}">{{name}}</a></td>
-			<td>{{sellIn}} days</td>
-			<td>{{quality}}</td>
-		</tr>
-		{{/.}}
-		</tbody>
-	</table>
-
-	{{#.}}
-	<div class="modal fade" id="myModal{{index}}">
-		<div class="modal-header">
-			<a class="close" data-dismiss="modal">&times;</a>
-
-			<h3>{{name}}</h3>
-		</div>
-		<div class="modal-body">
-			<p>Quality: <span class="label label-info">{{quality}}</span></p>
-
-			<p>Sell in: <span class="label label-info">{{sellIn}} days</span></p>
-
-			<ul class="thumbnails">
-				<li class="span5">
-					<a href="#" class="thumbnail">
-						<img src="/web/img/{{name}}.jpg" alt="{{name}}">
-					</a>
-				</li>
-			</ul>
-
-		</div>
-	</div>
-	{{/.}}
-</script>
 <script src="/web/js/jquery-1.7.1.min.js"></script>
 <script src="/web/js/bootstrap.min.js"></script>
 <script src="/web/js/mustache.js"></script>
+<script src="/web/js/common.js"></script>
 <script type="application/javascript">
-	$.getJSON('/inventory.json', function (json) {
-		$('#inventory').html(Mustache.to_html($('#inventoryTemplate').html(), json));
-	});
+	replaceWith('#inventory', '/inventory.json');
 </script>
 </body>
 </html>
