@@ -1,77 +1,95 @@
 package fr.xebia.katas.gildedrose;
 
+import org.fest.util.VisibleForTesting;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Inn {
-   private List<Item> items;
+    private List<InnItem> items;
 
-   public Inn() {
-      items = new ArrayList<Item>();
-      items.add(new Item("+5 Dexterity Vest", 10, 20));
-      items.add(new Item("Aged Brie", 2, 0));
-      items.add(new Item("Elixir of the Mongoose", 5, 7));
-      items.add(new Item("Sulfuras, Hand of Ragnaros", 0, 80));
-      items.add(new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20));
-      items.add(new Item("Conjured Mana Cake", 3, 6));
-   }
+    public Inn() {
+        items = new ArrayList<InnItem>();
+        items.add(new InnItem("+5 Dexterity Vest", 10, 20));
+        items.add(new InnItem("Aged Brie", 2, 0));
+        items.add(new InnItem("Elixir of the Mongoose", 5, 7));
+        items.add(new InnItem("Sulfuras, Hand of Ragnaros", 0, 80));
+        items.add(new InnItem("Backstage passes to a TAFKAL80ETC concert", 15, 20));
+        items.add(new InnItem("Conjured Mana Cake", 3, 6));
+    }
 
-   public void updateQuality() {
-      for (int i = 0; i < items.size(); i++) {
-         if (!items.get(i).getName().equals("Aged Brie") && !items.get(i).getName().equals("Backstage passes to a TAFKAL80ETC concert")) {
-            if (items.get(i).getQuality() > 0) {
-               if (!items.get(i).getName().equals("Sulfuras, Hand of Ragnaros")) {
-                  items.get(i).setQuality(items.get(i).getQuality() - 1);
-               }
+    @VisibleForTesting
+    protected Inn(InnItem item) {
+        items = new ArrayList<InnItem>();
+        items.add(item);
+    }
+
+    @VisibleForTesting
+    protected Item getItem(int i) {
+        return items.get(i);
+    }
+
+    public void updateQualityAndSellIn() {
+        for(InnItem currentItem : items) {
+            if (currentItem.is("Sulfuras")) {
+                continue;
             }
-         } else {
-            if (items.get(i).getQuality() < 50) {
-               items.get(i).setQuality(items.get(i).getQuality() + 1);
-
-               if (items.get(i).getName().equals("Backstage passes to a TAFKAL80ETC concert")) {
-                  if (items.get(i).getSellIn() < 11) {
-                     if (items.get(i).getQuality() < 50) {
-                        items.get(i).setQuality(items.get(i).getQuality() + 1);
-                     }
-                  }
-
-                  if (items.get(i).getSellIn() < 6) {
-                     if (items.get(i).getQuality() < 50) {
-                        items.get(i).setQuality(items.get(i).getQuality() + 1);
-                     }
-                  }
-               }
-            }
-         }
-
-         if (!items.get(i).getName().equals("Sulfuras, Hand of Ragnaros")) {
-            items.get(i).setSellIn(items.get(i).getSellIn() - 1);
-         }
-
-         if (items.get(i).getSellIn() < 0) {
-            if (!items.get(i).getName().equals("Aged Brie")) {
-               if (!items.get(i).getName().equals("Backstage passes to a TAFKAL80ETC concert")) {
-                  if (items.get(i).getQuality() > 0) {
-                     if (!items.get(i).getName().equals("Sulfuras, Hand of Ragnaros")) {
-                        items.get(i).setQuality(items.get(i).getQuality() - 1);
-                     }
-                  }
-               } else {
-                  items.get(i).setQuality(items.get(i).getQuality() - items.get(i).getQuality());
-               }
+            currentItem.decreaseSellIn();
+            if (currentItem.is("Aged Brie")) {
+                handleAgedBrie(currentItem);
+            } else if (currentItem.is("Backstage passes")) {
+                handleBackstagePasses(currentItem);
+            } else if (currentItem.is("Conjured")) {
+                handleConjured(currentItem);
             } else {
-               if (items.get(i).getQuality() < 50) {
-                  items.get(i).setQuality(items.get(i).getQuality() + 1);
-               }
+                handleDefaultObject(currentItem);
             }
-         }
-      }
+        }
+    }
 
-}
+    private boolean is(Item currentItem, String name) {
+        return currentItem.getName().startsWith(name);
+    }
 
-   public static void main(String[] args) {
-      System.out.println("OMGHAI!");
-      new Inn().updateQuality();
-   }
+    private void handleAgedBrie(InnItem agedBrie) {
+        if (agedBrie.isSellInDayPassed()) {
+            agedBrie.increaseQuality(2);
+        } else {
+            agedBrie.increaseQuality();
+        }
+    }
 
+    private void handleBackstagePasses(InnItem backstagePasses) {
+        if (backstagePasses.isSellInDayPassed()) {
+            backstagePasses.setQuality(0);
+        } else if (backstagePasses.getSellIn() < 5) {
+            backstagePasses.increaseQuality(3);
+        } else if (backstagePasses.getSellIn() < 10) {
+            backstagePasses.increaseQuality(2);
+        } else {
+            backstagePasses.increaseQuality();
+        }
+    }
+
+    private void handleConjured(InnItem conjuredItem) {
+        handleDefaultObject(conjuredItem);
+        handleDefaultObject(conjuredItem);
+    }
+
+    private void handleDefaultObject(InnItem defaultItem) {
+        if (defaultItem.isSellInDayPassed()) {
+            defaultItem.decreaseQuality(2);
+        } else {
+            defaultItem.decreaseQuality();
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("OMGHAI!");
+        new Inn().updateQualityAndSellIn();
+    }
+
+    public List<InnItem> getItems() {
+        return items;
+    }
 }
