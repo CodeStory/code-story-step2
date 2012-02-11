@@ -1,40 +1,15 @@
 package fr.xebia.katas.gildedrose;
 
-import lombok.*;
-
-import static java.lang.Math.*;
-
-@AllArgsConstructor
+@lombok.AllArgsConstructor
 class ItemUpdater {
-	@Delegate Item item;
+	@lombok.Delegate Item item;
 
 	void updateQuality() {
-		if ("Sulfuras, Hand of Ragnaros".equals(getName())) {
-			return;
-		}
-
-		setSellIn(getSellIn() - 1);
-
-		if ("Aged Brie".equals(getName())) {
-			addQualityIf(+1, true);
-			addQualityIf(+1, getSellIn() < 0);
-		} else if ("Backstage passes to a TAFKAL80ETC concert".equals(getName())) {
-			addQualityIf(+1, true);
-			addQualityIf(+1, getSellIn() < 10);
-			addQualityIf(+1, getSellIn() < 5);
-			addQualityIf(-getQuality(), getSellIn() < 0);
-		} else if ("Conjured Mana Cake".equals(getName())) {
-			addQualityIf(-2, true);
-			addQualityIf(-2, getSellIn() < 0);
-		} else {
-			addQualityIf(-1, true);
-			addQualityIf(-1, getSellIn() < 0);
-		}
+		setSellIn(getSellIn() - ("Sulfuras, Hand of Ragnaros".equals(getName()) ? 0 : (("Aged Brie".equals(getName()) && updateQuality(getQuality() + 1 + (getSellIn() <= 0 ? 1 : 0))) || ("Backstage passes to a TAFKAL80ETC concert".equals(getName()) && updateQuality(getSellIn() <= 0 ? 0 : (getQuality() + 1 + (getSellIn() <= 10 ? 1 : 0) + (getSellIn() <= 5 ? 1 : 0)))) || ("Conjured Mana Cake".equals(getName()) && updateQuality(getQuality() - 2 - (getSellIn() <= 0 ? 2 : 0))) || updateQuality(getQuality() - 1 - (getSellIn() <= 0 ? 1 : 0)) ? 1 : 1)));
 	}
 
-	void addQualityIf(int add, boolean condition) {
-		if (condition) {
-			setQuality(max(0, min(getQuality() + add, 50)));
-		}
+	boolean updateQuality(int quality) {
+		setQuality(java.lang.Math.max(0, java.lang.Math.min(quality, 50)));
+		return true;
 	}
 }
