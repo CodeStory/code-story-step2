@@ -7,8 +7,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.jersey>1.12</version.jersey>
     </properties>
-
 
     <build>
         <pluginManagement>
@@ -50,7 +50,7 @@
                             <includeScope>compile</includeScope>
                             <includeScope>runtime</includeScope>
                             <excludeScope>test</excludeScope>
-                            <outputDirectory>target/lib</outputDirectory>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -66,16 +66,21 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>0.10.8</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.easytesting</groupId>
             <artifactId>fest-assert</artifactId>
             <version>1.4</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>0.10.8</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>11.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.github.spullara.mustache.java</groupId>
@@ -85,17 +90,12 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>1.11</version>
+            <version>${version.jersey}</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
-            <version>1.11</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>11.0</version>
+            <version>${version.jersey}</version>
         </dependency>
     </dependencies>
 </project>

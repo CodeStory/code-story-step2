@@ -1,4 +1,4 @@
-package fr.xebia.katas.gildedrose;
+package gildedrose;
 
 import javax.activation.*;
 import javax.ws.rs.*;

@@ -1,4 +1,4 @@
-package fr.xebia.katas.gildedrose;
+package gildedrose;
 
 import com.google.common.base.*;
 import com.sun.jersey.api.container.httpserver.*;
