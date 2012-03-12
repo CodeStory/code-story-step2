@@ -97,5 +97,10 @@
             <artifactId>jersey-json</artifactId>
             <version>${version.jersey}</version>
         </dependency>
+        <dependency>
+            <groupId>net.gageot</groupId>
+            <artifactId>listmaker</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
 </project>

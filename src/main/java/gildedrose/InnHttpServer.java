@@ -8,7 +8,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.*;
 
-import static com.google.common.collect.Lists.*;
+import static net.gageot.listmaker.ListMaker.*;
 
 @Path("/")
 public class InnHttpServer extends AbstractResource {
@@ -38,14 +38,14 @@ public class InnHttpServer extends AbstractResource {
 	@Produces("application/json")
 	@Path("/inventory.json")
 	public List<IndexedItem> inventory() {
-		return transform(inn.getItems(), new Function<Item, IndexedItem>() {
+		return with(inn.getItems()).to(new Function<Item, IndexedItem>() {
 			int index;
 
 			@Override
 			public IndexedItem apply(Item item) {
 				return new IndexedItem(item, index++);
 			}
-		});
+		}).toList();
 	}
 
 	@GET
