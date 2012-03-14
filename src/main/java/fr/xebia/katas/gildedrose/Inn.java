@@ -17,7 +17,7 @@ public class Inn {
 
 	public void updateQuality() {
 		for (Item item : items) {
-			new ItemUpdater(item).updateItemQuality();
+			new ItemUpdater(item).update();
 		}
 	}
 

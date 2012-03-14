@@ -2,59 +2,56 @@ package fr.xebia.katas.gildedrose;
 
 import lombok.*;
 
+import static java.lang.Math.*;
+
+@AllArgsConstructor
 class ItemUpdater {
-	@Delegate private Item item;
+	@Delegate Item item;
 
-	ItemUpdater(Item item) {
-		this.item = item;
-	}
-
-	void updateItemQuality() {
+	void update() {
 		if ("Sulfuras, Hand of Ragnaros".equals(getName())) {
 			return;
 		}
 
-		setSellIn(getSellIn() - 1);
+		item.setSellIn(getSellIn() - 1);
+		int sellIn = getSellIn();
 
 		if ("Aged Brie".equals(getName())) {
-			increaseQuality();
-			increaseQualityWhen(getSellIn() < 0);
+			increaseQualityBy(1).when(sellIn >= 0);
+			increaseQualityBy(2).when(sellIn < 0);
 		} else if ("Backstage passes to a TAFKAL80ETC concert".equals(getName())) {
-			increaseQuality();
-			increaseQualityWhen(getSellIn() < 10);
-			increaseQualityWhen(getSellIn() < 5);
-			setQualityWhen(0, getSellIn() < 0);
+			increaseQualityBy(1).when(sellIn >= 10);
+			increaseQualityBy(2).when(sellIn >= 5 && sellIn < 10);
+			increaseQualityBy(3).when(sellIn < 5);
+			changeQuality(0).when(sellIn < 0);
 		} else if ("Conjured Mana Cake".equals(getName())) {
-			decreaseQuality();
-			decreaseQuality();
-			decreaseQualityWhen(getSellIn() < 0);
-			decreaseQualityWhen(getSellIn() < 0);
+			decreaseQualityBy(2).when(sellIn >= 0);
+			decreaseQualityBy(4).when(sellIn < 0);
 		} else {
-			decreaseQuality();
-			decreaseQualityWhen(getSellIn() < 0);
+			decreaseQualityBy(1).when(sellIn >= 0);
+			decreaseQualityBy(2).when(sellIn < 0);
 		}
 	}
 
-	private void increaseQuality() {
-		increaseQualityWhen(true);
+	ConditionEvaluator increaseQualityBy(int increment) {
+		return new ConditionEvaluator(getQuality() + increment);
 	}
 
-	private void decreaseQuality() {
-		decreaseQualityWhen(true);
+	ConditionEvaluator decreaseQualityBy(int increment) {
+		return new ConditionEvaluator(getQuality() - increment);
 	}
 
-	private void increaseQualityWhen(boolean condition) {
-		setQualityWhen(getQuality() + 1, condition);
+	ConditionEvaluator changeQuality(int quality) {
+		return new ConditionEvaluator(quality);
 	}
 
-	private void decreaseQualityWhen(boolean condition) {
-		setQualityWhen(getQuality() - 1, condition);
-	}
+	@AllArgsConstructor
+	class ConditionEvaluator {
+		int newQuality;
 
-	private void setQualityWhen(int quality, boolean condition) {
-		if (condition) {
-			if (quality <= 50 && quality >= 0) {
-				setQuality(quality);
+		void when(boolean condition) {
+			if (condition) {
+				item.setQuality(max(0, min(newQuality, 50)));
 			}
 		}
 	}
