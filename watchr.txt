@@ -1,0 +1,16 @@
+# sudo gem install watchr growl
+#
+# Run me with:
+#   $ watchr watch.txt
+#
+require 'growl'
+
+watch('.*\.js') {test}
+
+def test
+  if (system "node test.js")
+    Growl.notify 'SUCCESS', :icon => 'misc/green.png'
+  else
+    Growl.notify 'FAILURE', :icon => 'misc/red.png'
+  end
+end
