@@ -16,7 +16,6 @@ public class InnTest {
 		assertThat(items).onProperty("name").containsExactly("+5 Dexterity Vest", "Aged Brie", "Elixir of the Mongoose", "Sulfuras, Hand of Ragnaros", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake");
 		assertThat(items).onProperty("quality").containsExactly(20, 0, 7, 80, 20, 6);
 		assertThat(items).onProperty("sellIn").containsExactly(10, 2, 5, 0, 15, 3);
-
 	}
 
 	@Test

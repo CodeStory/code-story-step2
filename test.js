@@ -9,15 +9,22 @@ assert.notExists = function(selector) {
 	assert.ok(!browser.query(selector));
 }
 
+port = process.argv[2]
+console.log(port);
 browser = new Browser()
-browser.visit("http://localhost:8080/", function() {
-    assert.ok(browser.success);
-    assert.equal(browser.text("title"), "Gilded Rose Inn");
+browser.visit("http://localhost:" + port + "/", function() {
+	should_have_correct_title();
+	should_show_aged_brie_image_when_aged_brie_link_is_clicked();
+});
 
-    assert.exists(".fade img[src='/web/img/Aged Brie.jpg']");
-    assert.notExists(".fade.in img[src='/web/img/Aged Brie.jpg']");
+should_have_correct_title = function() {
+    assert.equal(browser.text("title"), "Gilded Rose Inn");	
+}
+
+should_show_aged_brie_image_when_aged_brie_link_is_clicked = function() {
+    assert.notExists(".fade.in img[src*='Aged Brie.jpg']");
 	
 	browser.clickLink("Aged Brie", function() {
-		assert.exists(".fade.in img[src='/web/img/Aged Brie.jpg']");
+		assert.exists(".fade.in img[src*='Aged Brie.jpg']");
 	})
-});
+}

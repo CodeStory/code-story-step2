@@ -2,12 +2,14 @@ package gildedrose;
 
 import com.google.common.base.*;
 import com.sun.jersey.api.container.httpserver.*;
+import com.sun.net.httpserver.HttpServer;
 import lombok.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.*;
 
+import static java.lang.String.format;
 import static net.gageot.listmaker.ListMaker.*;
 
 @Path("/")
@@ -60,7 +62,13 @@ public class InnHttpServer extends AbstractResource {
 		@Getter int index;
 	}
 
+    public static HttpServer start(int port) throws Exception {
+        HttpServer httpServer = HttpServerFactory.create(format("http://localhost:%d/", port));
+        httpServer.start();
+        return httpServer;
+    }
+
 	public static void main(String[] args) throws Exception {
-		HttpServerFactory.create("http://localhost:8080/").start();
+        start(9090);
 	}
 }
