@@ -32,9 +32,9 @@ fi
 git log -n 1 | grep -q -c "wip" && git reset HEAD~1
 
 # Private build
-rm -Rf .privatebuild
-git clone -slb "${BRANCH}" . .privatebuild
-cd .privatebuild
+rm -Rf ../privatebuild
+git clone -slb "${BRANCH}" . ../privatebuild
+cd ../privatebuild
 
 # Build with maven
 mvn install
