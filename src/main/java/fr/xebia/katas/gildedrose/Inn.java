@@ -6,7 +6,11 @@ import java.util.List;
 public class Inn {
    private List<Item> items;
 
-   public Inn() {
+  public List<Item> getItems() {
+    return items;
+  }
+
+  public Inn() {
       items = new ArrayList<Item>();
       items.add(new Item("+5 Dexterity Vest", 10, 20));
       items.add(new Item("Aged Brie", 2, 0));
