@@ -8,33 +8,47 @@ import static java.lang.Math.min;
 
 @AllArgsConstructor
 class ItemUpdater {
+  static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
+  static final String BRIE = "Aged Brie";
+  static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
+
   @Delegate
   Item item;
 
   void updateQuality() {
-    if ("Sulfuras, Hand of Ragnaros".equals(getName())) {
+    if (is(SULFURAS)) {
       return;
     }
 
-    setSellIn(getSellIn() - 1);
+    decreaseSellIn();
 
-    if ("Aged Brie".equals(getName())) {
-      addQualityIf(+1, true);
-      addQualityIf(+1, getSellIn() < 0);
-    } else if ("Backstage passes to a TAFKAL80ETC concert".equals(getName())) {
-      addQualityIf(+1, true);
-      addQualityIf(+1, getSellIn() < 10);
-      addQualityIf(+1, getSellIn() < 5);
-      addQualityIf(-getQuality(), getSellIn() < 0);
+    if (is(BRIE)) {
+      increaseQuality();
+      if (getSellIn() < 0) increaseQuality();
+    } else if (is(BACKSTAGE_PASSES)) {
+      increaseQuality();
+      if (getSellIn() < 10) increaseQuality();
+      if (getSellIn() < 5) increaseQuality();
+      if (getSellIn() < 0) setQuality(0);
     } else {
-      addQualityIf(-1, true);
-      addQualityIf(-1, getSellIn() < 0);
+      decreaseQuality();
+      if (getSellIn() < 0) decreaseQuality();
     }
   }
 
-  void addQualityIf(int add, boolean condition) {
-    if (condition) {
-      setQuality(max(0, min(getQuality() + add, 50)));
-    }
+  boolean is(String name) {
+    return getName().equals(name);
+  }
+
+  void decreaseSellIn() {
+    setSellIn(getSellIn() - 1);
+  }
+
+  void increaseQuality() {
+    setQuality(min(getQuality() + 1, 50));
+  }
+
+  void decreaseQuality() {
+    setQuality(max(0, getQuality() - 1));
   }
 }

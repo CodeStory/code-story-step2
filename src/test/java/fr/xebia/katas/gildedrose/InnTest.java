@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static net.gageot.test.assertions.Conditions.reflectionEqualTo;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class InnTest {
@@ -58,22 +59,14 @@ public class InnTest {
   }
 
   @Test
-  public void should_validate_with_old_implementation() {
+  public void should_cross_check_with_legacy_implementation() {
     LegacyInn legacyInn = new LegacyInn();
 
     for (int day = 0; day < 100; day++) {
       legacyInn.updateQuality();
       inn.updateQuality();
 
-      List<LegacyItem> legacyItems = legacyInn.getItems();
-      List<Item> items = inn.getItems();
-
-      assertThat(items).hasSize(legacyItems.size());
-      for (int i = 0; i < legacyItems.size(); i++) {
-        assertThat(items.get(i).getName()).isEqualTo(legacyItems.get(i).getName());
-        assertThat(items.get(i).getQuality()).isEqualTo(legacyItems.get(i).getQuality());
-        assertThat(items.get(i).getSellIn()).isEqualTo(legacyItems.get(i).getSellIn());
-      }
+      assertThat((Object) inn.getItems()).is(reflectionEqualTo(legacyInn.getItems()));
     }
   }
 }

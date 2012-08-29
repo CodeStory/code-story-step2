@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inn {
-  private List<Item> items;
-
-  public List<Item> getItems() {
-    return items;
-  }
+  private final List<Item> items;
 
   public Inn() {
     items = new ArrayList<Item>();
@@ -18,6 +14,10 @@ public class Inn {
     items.add(new Item("Sulfuras, Hand of Ragnaros", 0, 80));
     items.add(new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20));
     items.add(new Item("Conjured Mana Cake", 3, 6));
+  }
+
+  public List<Item> getItems() {
+    return items;
   }
 
   public void updateQuality() {
