@@ -1,28 +1,27 @@
 package fr.xebia.katas.gildedrose;
 
+import lombok.AllArgsConstructor;
+import lombok.Delegate;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+@AllArgsConstructor
 class ItemUpdater {
+  @Delegate
   Item item;
 
-  ItemUpdater(Item item) {
-    this.item = item;
-  }
-
   void updateQuality() {
-    String name = item.getName();
-
-    if ("Sulfuras, Hand of Ragnaros".equals(name)) {
+    if ("Sulfuras, Hand of Ragnaros".equals(getName())) {
       return;
     }
 
-    item.setSellIn(getSellIn() - 1);
+    setSellIn(getSellIn() - 1);
 
-    if ("Aged Brie".equals(name)) {
+    if ("Aged Brie".equals(getName())) {
       addQualityIf(+1, true);
       addQualityIf(+1, getSellIn() < 0);
-    } else if ("Backstage passes to a TAFKAL80ETC concert".equals(name)) {
+    } else if ("Backstage passes to a TAFKAL80ETC concert".equals(getName())) {
       addQualityIf(+1, true);
       addQualityIf(+1, getSellIn() < 10);
       addQualityIf(+1, getSellIn() < 5);
@@ -33,17 +32,9 @@ class ItemUpdater {
     }
   }
 
-  int getQuality() {
-    return item.getQuality();
-  }
-
-  int getSellIn() {
-    return item.getSellIn();
-  }
-
   void addQualityIf(int add, boolean condition) {
     if (condition) {
-      item.setQuality(max(0, min(getQuality() + add, 50)));
+      setQuality(max(0, min(getQuality() + add, 50)));
     }
   }
 }
