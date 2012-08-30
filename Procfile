@@ -1,0 +1,1 @@
+web:	java -cp target/classes fr.xebia.katas.gildedrose.InnWebServer
