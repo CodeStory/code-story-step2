@@ -18,14 +18,14 @@ public class InnWebServer implements HttpHandler {
   }
 
   public static void main(String[] args) throws IOException {
-    String port = System.getenv("PORT");
-    if (null == port) {
-      port = "8000";
-    }
+    System.out.println("START");
+    int port = Integer.valueOf(System.getenv("PORT"));
+    System.out.println(port);
 
-    InetSocketAddress address = new InetSocketAddress(Integer.valueOf(port));
-    HttpServer server = HttpServer.create(address, 0);
+    HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
     server.createContext("/", new InnWebServer());
     server.start();
+
+    System.out.println("STARTED");
   }
 }
