@@ -33,13 +33,6 @@
       <version>1.4</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>net.gageot</groupId>
-      <artifactId>testexpert</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
-
   </dependencies>
 
   <build>

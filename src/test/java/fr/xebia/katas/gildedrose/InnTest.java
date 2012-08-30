@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static net.gageot.test.assertions.Conditions.reflectionEqualTo;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class InnTest {
@@ -66,7 +65,11 @@ public class InnTest {
       legacyInn.updateQuality();
       inn.updateQuality();
 
-      assertThat((Object) inn.getItems()).is(reflectionEqualTo(legacyInn.getItems()));
+      for (int i = 0; i < legacyInn.getItems().size(); i++) {
+        assertThat(inn.getItems().get(i).getName()).isEqualTo(legacyInn.getItems().get(i).getName());
+        assertThat(inn.getItems().get(i).getSellIn()).isEqualTo(legacyInn.getItems().get(i).getSellIn());
+        assertThat(inn.getItems().get(i).getQuality()).isEqualTo(legacyInn.getItems().get(i).getQuality());
+      }
     }
   }
 }
