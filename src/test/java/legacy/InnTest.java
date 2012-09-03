@@ -1,4 +1,4 @@
-package fr.xebia.katas.gildedrose;
+package legacy;
 
 import org.junit.Before;
 import org.junit.Test;

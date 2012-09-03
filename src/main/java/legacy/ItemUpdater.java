@@ -1,4 +1,4 @@
-package fr.xebia.katas.gildedrose;
+package legacy;
 
 import lombok.AllArgsConstructor;
 import lombok.Delegate;

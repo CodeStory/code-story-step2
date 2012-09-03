@@ -1,4 +1,4 @@
-package fr.xebia.katas.gildedrose;
+package legacy;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

@@ -1,4 +1,4 @@
-package fr.xebia.katas.gildedrose;
+package legacy;
 
 public class Item {
    private String name;

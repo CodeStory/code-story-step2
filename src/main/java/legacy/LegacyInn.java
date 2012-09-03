@@ -1,4 +1,4 @@
-package fr.xebia.katas.gildedrose;
+package legacy;
 
 import java.util.ArrayList;
 import java.util.List;

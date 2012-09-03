@@ -1,1 +1,1 @@
-web:	java -cp target/classes fr.xebia.katas.gildedrose.InnWebServer
+web:	java -cp target/classes legacy.InnWebServer
