@@ -1,1 +1,0 @@
-web:	java -cp target/classes legacy.InnWebServer
