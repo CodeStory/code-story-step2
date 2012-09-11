@@ -21,20 +21,28 @@ public class InnWeb implements HttpHandler {
 
   @Override
   public void handle(HttpExchange exchange) throws IOException {
-    String json = "[" + Joiner.on(',').join(inn.getItems()) + "]";
+    String path = exchange.getRequestURI().getPath();
 
-    String uri = exchange.getRequestURI().toString();
-    if (uri.contains("?callback=")) {
-      String[] callbacks = uri.split("[=?&]");
-      String callback = callbacks[2];
-      json = callback + "(" + json + ")";
+    if ("/update".equals(path)) {
+      inn.updateQuality();
+
+      exchange.sendResponseHeaders(200, 0);
+    } else {
+      String json = "[" + Joiner.on(',').join(inn.getItems()) + "]";
+
+      String uri = exchange.getRequestURI().toString();
+      if (uri.contains("?callback")) {
+        String callback = uri.split("[=?&]")[2];
+        json = callback + "(" + json + ")";
+      }
+
+      byte[] response = json.getBytes();
+
+      exchange.getResponseHeaders().add("Content-type", "text/javascript");
+      exchange.sendResponseHeaders(200, response.length);
+      exchange.getResponseBody().write(response);
     }
 
-    byte[] response = json.getBytes();
-
-    exchange.getResponseHeaders().add("Content-type", "text/javascript");
-    exchange.sendResponseHeaders(200, response.length);
-    exchange.getResponseBody().write(response);
     exchange.close();
   }
 }
