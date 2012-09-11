@@ -20,8 +20,19 @@
       <groupId>org.easytesting</groupId>
       <artifactId>fest-assert</artifactId>
       <version>1.4</version>
+      <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>0.11.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>12.0</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -45,6 +56,25 @@
           <source>1.6</source>
           <target>1.6</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <includeScope>compile</includeScope>
+              <includeScope>runtime</includeScope>
+              <excludeScope>test</excludeScope>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

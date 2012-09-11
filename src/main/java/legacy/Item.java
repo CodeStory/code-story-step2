@@ -30,4 +30,9 @@ public class Item {
   public int getQuality() {
     return quality;
   }
+
+  @Override
+  public String toString() {
+    return String.format("{\"name\": \"%s\", \"quality\": %d, \"sellIn\": %d}", name, quality, sellIn);
+  }
 }
